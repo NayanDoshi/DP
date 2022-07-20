@@ -1,0 +1,49 @@
+// Brute force for every word check whether it is subsequence or not .... TC O(given string length*eachword length*words.size()) SC: O(n^2)
+
+// Efficient: Store index of each character of string in vector of corresponding character and take lastindex variable uoadte aacordingly. 
+// TC: O(given string lenth) +(words.size()*eachword length*log(each word length))
+// SC: O(26+given string length) 
+
+
+//https://www.youtube.com/watch?v=Mc--V-qHoDM
+//After seeing video
+
+class Solution {
+public:
+    int numMatchingSubseq(string s, vector<string>& words) {
+        vector<vector<int>>idx(26);
+        
+        for(int i=0;i<s.size();i++)
+        {
+            idx[s[i]-'a'].push_back(i);
+        }
+        
+        int cnt=0;
+        for(int i=0;i<words.size();i++)
+        {
+            cnt++;
+            int lastindex=-1;
+            string s2=words[i];
+            for(int j=0;j<s2.size();j++)
+            {
+                int x=s2[j]-'a';
+                
+                auto it=upper_bound(idx[x].begin(),idx[x].end(),lastindex);
+                if(it!=idx[x].end())
+                {
+                    lastindex=*it;
+                }
+                else
+                {
+                    cnt--;
+                    break;
+                }
+                
+            }
+            
+        }
+        
+        return cnt;
+        
+    }
+};
